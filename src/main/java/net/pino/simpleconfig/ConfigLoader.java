@@ -11,6 +11,9 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 public class ConfigLoader {
 
@@ -44,13 +47,13 @@ public class ConfigLoader {
             }
             String path = field.getAnnotation(Path.class).value();
 
-            if(configuration.get(path) != null){
-                Object value = configuration.getObject(path, field.getType());
+            if(configuration.contains(path)){
+                Object value = (field.getType().isPrimitive())
+                        ? toObj(field, configuration, path)
+                        : configuration.getObject(path, field.getType());
                 if(value != null){
-                    System.out.println("Loaded value for " + path + ": " + value);
                     field.set(config, value);
                 }
-
             }else{
                 configuration.set(path, field.get(config));
                 if(field.isAnnotationPresent(Comment.class)){
@@ -58,5 +61,16 @@ public class ConfigLoader {
                 }
             }
         }
+    }
+
+    private static Object toObj(Field field, FileConfiguration config, String path){
+        if(field.getType() == int.class){
+            return config.getInt(path);
+        }else if(field.getType() == boolean.class){
+            return config.getBoolean(path);
+        }else if(field.getType() == long.class){
+            return config.getLong(path);
+        }
+        return null;
     }
 }
