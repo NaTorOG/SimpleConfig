@@ -47,6 +47,7 @@ public class ConfigLoader {
             if(configuration.get(path) != null){
                 Object value = configuration.getObject(path, field.getType());
                 if(value != null){
+                    System.out.println("Loaded value for " + path + ": " + value);
                     field.set(config, value);
                 }
 
