@@ -43,15 +43,16 @@ public class ConfigLoader {
                 throw new IllegalArgumentException(field.getName() + " must be annoteted with @Path");
             }
             String path = field.getAnnotation(Path.class).value();
-            if(configuration.contains(path)){
+
+            if(configuration.get(path) != null){
                 Object value = configuration.getObject(path, field.getType());
-                if(value != null) field.set(config, value);
-                // Updating config if there is something missing
+                field.set(config, value);
+
             }else{
+                configuration.set(path, field.get(config));
                 if(field.isAnnotationPresent(Comment.class)){
                     configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
                 }
-                configuration.set(path, field.get(config));
             }
         }
     }
