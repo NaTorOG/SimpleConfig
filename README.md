@@ -4,6 +4,8 @@
  [![](https://jitpack.io/v/NaTorOG/SimpleConfig.svg)](https://jitpack.io/#NaTorOG/SimpleConfig)
   
 #### ADD TO YOUR PROJECT
+` Replace RELEASE with jitpack version above`
+
 Maven
 ```xml
 <repository>
@@ -15,7 +17,7 @@ Maven
 <dependency>
     <groupId>com.github.NaTorOG</groupId>
     <artifactId>SimpleConfig</artifactId>
-    <version>77b7de78c2</version>
+    <version>RELEASE</version>
 </dependency>
 ```
 Gradle
@@ -27,7 +29,7 @@ repositories {
 ```
 ```sh
 dependencies {
-        implementation 'com.github.NaTorOG:SimpleConfig:77b7de78c2'
+        implementation 'com.github.NaTorOG:SimpleConfig:RELEASE'
 }
 ```
 
@@ -47,7 +49,7 @@ Every serializable Object is fully supported!
 public class ExampleConfig extends BaseConfig {
 
     public ExampleConfig(TestLib plugin) {
-        registerConfig(plugin, this);
+        registerConfig(plugin);
     }
 
     @Path("database.port") // Path for this setting in your File
@@ -74,7 +76,7 @@ public class ExampleConfig extends BaseConfig {
 public class LangConfig extends LightConfig {
 
     public LangConfig(TestLib plugin){
-        registerLightConfig(plugin, this);
+        registerLightConfig(plugin);
     }
 
     public String ciao(){
@@ -107,8 +109,8 @@ public final class TestLib extends JavaPlugin{
     }
 
     public void reloadConfigs(){
-        exampleConfig.reload(exampleConfig);
-        exampleConfig.saveAndReload(this, exampleConfig); // When you have update a value with fileConfiguration.set
+        exampleConfig.reload();
+        exampleConfig.saveAndReload(this); // When you have update a value with fileConfiguration.set
 
         langConfig.reload();
         langConfig.saveAndReload(); // When you have update a value with fileConfiguration.set
