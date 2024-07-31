@@ -1,0 +1,4 @@
+name: SimpleConfig
+version: '${project.version}'
+main: net.pino.simpleconfig.SimpleConfig
+api-version: '1.18'
