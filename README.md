@@ -117,3 +117,23 @@ public final class TestLib extends JavaPlugin{
     }
 }
 ```
+
+### RESULT
+```YAML
+database:
+# Set the database port for MySQL
+# By default is 3306
+  port: 3306
+item:
+# Set the item to give on join
+# to new players!
+  diamond:
+    ==: org.bukkit.inventory.ItemStack
+    v: 3953
+    type: DIAMOND
+players:
+# Allowed players
+  allowed:
+  - Pino
+  - Gino
+```

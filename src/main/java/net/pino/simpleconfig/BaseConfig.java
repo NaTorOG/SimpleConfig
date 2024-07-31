@@ -2,6 +2,7 @@ package net.pino.simpleconfig;
 
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
+import net.pino.simpleconfig.annotations.Header;
 import net.pino.simpleconfig.utils.FieldsReader;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -9,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class BaseConfig {
 
@@ -43,6 +45,9 @@ public abstract class BaseConfig {
 
         try{
             FieldsReader.readFields(fileConfiguration, this);
+            if(clazz.isAnnotationPresent(Header.class)){
+                fileConfiguration.options().setHeader(List.of(clazz.getAnnotation(Header.class).value()));
+            }
             fileConfiguration.options().parseComments(true);
             fileConfiguration.save(configFile);
         }catch (IllegalAccessException | IOException exception){
