@@ -1,0 +1,7 @@
+net\pino\simpleconfig\annotations\ConfigFile.class
+net\pino\simpleconfig\annotations\inside\Path.class
+net\pino\simpleconfig\annotations\Config.class
+net\pino\simpleconfig\annotations\inside\Default.class
+net\pino\simpleconfig\annotations\Updatable.class
+net\pino\simpleconfig\annotations\inside\Comment.class
+net\pino\simpleconfig\ConfigLoader.class
