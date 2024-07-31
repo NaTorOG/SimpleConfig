@@ -30,6 +30,7 @@ public class ConfigLoader {
 
         FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         readFields(fileConfiguration, config);
+        fileConfiguration.options().parseComments(true);
         fileConfiguration.save(configFile);
     }
 
@@ -47,7 +48,9 @@ public class ConfigLoader {
                 if(value != null) field.set(config, value);
                 // Updating config if there is something missing
             }else{
-                if(field.isAnnotationPresent(Comment.class)) configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
+                if(field.isAnnotationPresent(Comment.class)){
+                    configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
+                }
                 configuration.set(path, field.get(config));
             }
         }
