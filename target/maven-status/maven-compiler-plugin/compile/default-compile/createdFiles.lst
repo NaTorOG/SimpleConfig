@@ -1,7 +1,10 @@
 net\pino\simpleconfig\annotations\ConfigFile.class
+net\pino\simpleconfig\utils\ResourceSaver.class
 net\pino\simpleconfig\annotations\inside\Path.class
 net\pino\simpleconfig\annotations\Config.class
 net\pino\simpleconfig\annotations\inside\Default.class
-net\pino\simpleconfig\annotations\Updatable.class
 net\pino\simpleconfig\annotations\inside\Comment.class
-net\pino\simpleconfig\ConfigLoader.class
+net\pino\simpleconfig\utils\PrimitiveReader.class
+net\pino\simpleconfig\LightConfig.class
+net\pino\simpleconfig\BaseConfig.class
+net\pino\simpleconfig\utils\FieldsReader.class
