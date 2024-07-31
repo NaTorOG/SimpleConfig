@@ -46,6 +46,12 @@ Every serializable Object is fully supported!
 ```java
 @Config // Tells SimpleConfig this Class represents a Config
 @ConfigFile("settings.yml") // Name of the file that will be created (Paths are supported)
+@Header({"########################",
+        "#                      #",
+        "#      MyPlugin        #",
+        "#                      #",
+        "########################",
+        "# Wiki at https://yourwiki.com"})
 public class ExampleConfig extends BaseConfig {
 
     public ExampleConfig(TestLib plugin) {
@@ -120,6 +126,12 @@ public final class TestLib extends JavaPlugin{
 
 ### RESULT
 ```YAML
+########################
+#                      #
+#      MyPlugin        #
+#                      #
+########################
+# Wiki at https://yourwiki.com
 database:
 # Set the database port for MySQL
 # By default is 3306
