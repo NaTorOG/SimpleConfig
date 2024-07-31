@@ -119,7 +119,7 @@ public final class TestLib extends JavaPlugin{
         exampleConfig.saveAndReload(this); // When you have update a value with fileConfiguration.set
 
         langConfig.reload();
-        langConfig.saveAndReload(); // When you have update a value with fileConfiguration.set
+        langConfig.saveAndReload(); // When you have update a value with fileConfiguration.set(path, Obj)
     }
 }
 ```
