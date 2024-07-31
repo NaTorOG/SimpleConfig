@@ -66,8 +66,9 @@ public abstract class BaseConfig {
     /***
      * Simply reload the in Memory configuration reading @File
      */
-    public void reload(){
+    public void reload(Object config) throws IllegalAccessException {
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        FieldsReader.readFields(fileConfiguration, config);
     }
 
 }
