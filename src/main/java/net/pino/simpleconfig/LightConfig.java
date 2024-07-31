@@ -27,7 +27,7 @@ public abstract class LightConfig {
      * @param plugin Your Plugin Instance
      * @param config Your Class extending LightConfig
      */
-    public void registerLightConfig(Plugin plugin, Object config) throws Exception{
+    public void registerLightConfig(Plugin plugin, Object config){
         Class<?> clazz = config.getClass();
 
         if(BaseConfig.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends only one type!");
@@ -50,11 +50,15 @@ public abstract class LightConfig {
 
     /***
      * Save the in Memory configuration in the @File and Reload it
-     * @throws IOException IO exception that may occur
      */
-    public void saveAndReload() throws IOException {
-        fileConfiguration.save(configFile);
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+    public void saveAndReload(){
+        try{
+            fileConfiguration.save(configFile);
+            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        }catch (IOException exception){
+            exception.printStackTrace();
+        }
+
     }
 
     /***
