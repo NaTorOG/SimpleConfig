@@ -33,7 +33,7 @@ public abstract class BaseConfig {
 
         if(LightConfig.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends only one type!");
 
-        if(!this.getClass().isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends BaseConfig!");
+        if(!BaseConfig.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends BaseConfig!");
 
         if(!clazz.isAnnotationPresent(Config.class)) throw new IllegalArgumentException("The class must be annotated with @Config!");
 
