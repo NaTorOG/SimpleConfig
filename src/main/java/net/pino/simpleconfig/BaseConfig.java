@@ -26,7 +26,6 @@ public abstract class BaseConfig {
      * Register and update your configuration and will also add non-existing values into @File
      * @param plugin Your Plugin Instance
      * @param config Your Class extending BaseConfig
-     * @throws Exception Possible exceptions
      */
     public void registerConfig(Plugin plugin, Object config) throws Exception{
         Class<?> clazz = config.getClass();
@@ -41,12 +40,8 @@ public abstract class BaseConfig {
 
         String fileName = clazz.getAnnotation(ConfigFile.class).value();
         configFile = new File(plugin.getDataFolder(), fileName);
-
-        if(!configFile.exists()){
-            ResourceSaver.saveResource(fileName, plugin);
-        }
-
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        
         FieldsReader.readFields(fileConfiguration, config);
         fileConfiguration.options().parseComments(true);
         fileConfiguration.save(configFile);

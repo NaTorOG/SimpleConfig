@@ -25,8 +25,7 @@ public abstract class LightConfig {
     /***
      * Register a basic Config that does not auto update and has no fields
      * @param plugin Your Plugin Instance
-     * @param config Your Class extending BaseConfig
-     * @throws Exception Possible exceptions
+     * @param config Your Class extending LightConfig
      */
     public void registerLightConfig(Plugin plugin, Object config) throws Exception{
         Class<?> clazz = config.getClass();
