@@ -25,10 +25,9 @@ public abstract class LightConfig {
     /***
      * Register a basic Config that does not auto update and has no fields
      * @param plugin Your Plugin Instance
-     * @param config Your Class extending LightConfig
      */
-    public void registerLightConfig(Plugin plugin, Object config){
-        Class<?> clazz = config.getClass();
+    public void registerLightConfig(Plugin plugin){
+        Class<?> clazz = this.getClass();
 
         if(BaseConfig.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends only one type!");
 
@@ -44,7 +43,6 @@ public abstract class LightConfig {
         if(!configFile.exists()){
             ResourceSaver.saveResource(fileName, plugin);
         }
-
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
     }
 

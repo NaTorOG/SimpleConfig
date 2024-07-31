@@ -3,7 +3,6 @@ package net.pino.simpleconfig;
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
 import net.pino.simpleconfig.utils.FieldsReader;
-import net.pino.simpleconfig.utils.ResourceSaver;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -26,10 +25,9 @@ public abstract class BaseConfig {
     /***
      * Register and update your configuration and will also add non-existing values into @File
      * @param plugin Your Plugin Instance
-     * @param config Your Class extending BaseConfig
      */
-    public void registerConfig(Plugin plugin, Object config){
-        Class<?> clazz = config.getClass();
+    public void registerConfig(Plugin plugin){
+        Class<?> clazz = this.getClass();
 
         if(LightConfig.class.isAssignableFrom(clazz)) throw new IllegalArgumentException("The class must extends only one type!");
 
@@ -44,7 +42,7 @@ public abstract class BaseConfig {
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         try{
-            FieldsReader.readFields(fileConfiguration, config);
+            FieldsReader.readFields(fileConfiguration, this);
             fileConfiguration.options().parseComments(true);
             fileConfiguration.save(configFile);
         }catch (IllegalAccessException | IOException exception){
@@ -55,20 +53,19 @@ public abstract class BaseConfig {
     /***
      * Save the in Memory configuration in the @File and Reload it
      * @param plugin Your Plugin Instance
-     * @param config Your Class extending BaseConfig
      */
-    public void saveAndReload(Plugin plugin, Object config){
-        registerConfig(plugin, config);
+    public void saveAndReload(Plugin plugin){
+        registerConfig(plugin);
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
     }
 
     /***
      * Simply reload the in Memory configuration reading @File
      */
-    public void reload(Object config){
+    public void reload(){
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         try{
-            FieldsReader.readFields(fileConfiguration, config);
+            FieldsReader.readFields(fileConfiguration, this);
         }catch (IllegalAccessException exception){
             exception.printStackTrace();
         }
