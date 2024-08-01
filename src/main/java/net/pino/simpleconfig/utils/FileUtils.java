@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.*;
 import java.util.logging.Level;
 
-public class ResourceSaver {
+public class FileUtils {
 
     /***
      * A Lightly modified version of Bukkit Implementation

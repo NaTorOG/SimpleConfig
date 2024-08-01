@@ -2,7 +2,7 @@ package net.pino.simpleconfig;
 
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
-import net.pino.simpleconfig.utils.ResourceSaver;
+import net.pino.simpleconfig.utils.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -41,7 +41,7 @@ public abstract class LightConfig {
         configFile = new File(plugin.getDataFolder(), fileName);
 
         if(!configFile.exists()){
-            ResourceSaver.saveResource(fileName, plugin);
+            FileUtils.saveResource(fileName, plugin);
         }
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
     }

@@ -3,7 +3,7 @@ package net.pino.simpleconfig;
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
 import net.pino.simpleconfig.annotations.Header;
-import net.pino.simpleconfig.utils.FieldsReader;
+import net.pino.simpleconfig.utils.FieldUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -44,7 +44,7 @@ public abstract class BaseConfig {
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         try{
-            FieldsReader.readFields(fileConfiguration, this);
+            FieldUtils.loadFields(fileConfiguration, this);
             if(clazz.isAnnotationPresent(Header.class)){
                 fileConfiguration.options().setHeader(List.of(clazz.getAnnotation(Header.class).value()));
             }
@@ -60,8 +60,8 @@ public abstract class BaseConfig {
      * @param plugin Your Plugin Instance
      */
     public void saveAndReload(Plugin plugin){
-        registerConfig(plugin);
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        FieldUtils.reloadFields(fileConfiguration, this);
     }
 
     /***
@@ -70,7 +70,7 @@ public abstract class BaseConfig {
     public void reload(){
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         try{
-            FieldsReader.readFields(fileConfiguration, this);
+            FieldUtils.loadFields(fileConfiguration, this);
         }catch (IllegalAccessException exception){
             exception.printStackTrace();
         }
