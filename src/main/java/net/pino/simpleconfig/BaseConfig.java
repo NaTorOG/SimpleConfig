@@ -44,13 +44,13 @@ public abstract class BaseConfig {
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         try{
-            FieldUtils.loadFields(fileConfiguration, this);
+            FieldUtils.load(fileConfiguration, this);
             if(clazz.isAnnotationPresent(Header.class)){
                 fileConfiguration.options().setHeader(List.of(clazz.getAnnotation(Header.class).value()));
             }
             fileConfiguration.options().parseComments(true);
             fileConfiguration.save(configFile);
-        }catch (IllegalAccessException | IOException exception){
+        }catch (IOException exception){
             exception.printStackTrace();
         }
     }
@@ -60,8 +60,14 @@ public abstract class BaseConfig {
      * @param plugin Your Plugin Instance
      */
     public void saveAndReload(Plugin plugin){
+        registerConfig(plugin);
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-        FieldUtils.reloadFields(fileConfiguration, this);
+        try {
+            fileConfiguration.save(configFile);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while saving an reloading " + configFile.getName());
+        }
+        FieldUtils.load(fileConfiguration, this);
     }
 
     /***
@@ -69,11 +75,7 @@ public abstract class BaseConfig {
      */
     public void reload(){
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-        try{
-            FieldUtils.loadFields(fileConfiguration, this);
-        }catch (IllegalAccessException exception){
-            exception.printStackTrace();
-        }
+        FieldUtils.load(fileConfiguration, this);
     }
 
 }

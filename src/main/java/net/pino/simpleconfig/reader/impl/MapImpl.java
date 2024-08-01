@@ -12,14 +12,12 @@ public class MapImpl {
     public static Map<?, ?> getMapFromConfiguration(FileConfiguration configuration, String path, Field field) {
         Map<Object, Object> resultMap = new HashMap<>();
         ConfigurationSection section = configuration.getConfigurationSection(path);
-
         if (section != null) {
             for (String key : section.getKeys(false)) {
                 Object value = section.get(key);
                 resultMap.put(key, value);
             }
         }
-
         return resultMap;
     }
 }
