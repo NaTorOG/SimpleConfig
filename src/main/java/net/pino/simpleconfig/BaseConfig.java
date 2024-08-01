@@ -41,11 +41,6 @@ public abstract class BaseConfig {
 
         String fileName = clazz.getAnnotation(ConfigFile.class).value();
         configFile = new File(plugin.getDataFolder(), fileName);
-
-        if(!configFile.exists() && plugin.getResource(fileName) != null){
-            // A file version is present so we save it
-            plugin.saveResource(fileName, false);
-        }
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
         try{
