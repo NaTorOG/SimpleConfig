@@ -19,7 +19,6 @@ public class FieldsReader {
             field.setAccessible(true);
             if(field.isAnnotationPresent(Path.class)) {
                 String path = field.getAnnotation(Path.class).value();
-                if(!field.isAnnotationPresent(ConfigSection.class)) {
                     if (configuration.contains(path)) {
                         Object value = toObjValue(configuration, field, path);
                         if (value != null) {
@@ -32,18 +31,16 @@ public class FieldsReader {
                             configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
                         }
                     }
-
-                }else{
-                    if (field.isAnnotationPresent(Comment.class)) {
-                        configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
-                    }
-                    ConfigSection section = field.getAnnotation(ConfigSection.class);
-                    configuration.createSection(section.name());
-                    for(ConfigEntry entry : section.entries()){
-                        configuration.getConfigurationSection(section.name()).set(entry.key(), entry.value());
-                    }
+            }else if(field.isAnnotationPresent(ConfigSection.class)){
+                ConfigSection section = field.getAnnotation(ConfigSection.class);
+                if (field.isAnnotationPresent(Comment.class)) {
+                    configuration.setComments(section.name(), Arrays.asList(field.getAnnotation(Comment.class).value()));
                 }
-
+                configuration.createSection(section.name());
+                for(ConfigEntry entry : section.entries()){
+                    configuration.getConfigurationSection(section.name()).set(entry.key(), entry.value());
+                }
+                field.set(config, configuration.getConfigurationSection(section.name()));
             }
         }
     }
