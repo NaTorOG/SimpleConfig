@@ -33,11 +33,11 @@ public class FieldUtils {
                             if (value != null) field.set(config, value);
                         } else {
                             configuration.set(path, field.get(config));
-                            processComments(field, path, configuration);
                         }
                     }catch (IllegalAccessException exception){
                         throw new RuntimeException("Error while handling @Path fields");
                     }
+                    processComments(field, path, configuration);
                 });
     }
     private static void handleConfigSectionFields(Class<?> clazz, FileConfiguration configuration, Object config){
@@ -48,7 +48,7 @@ public class FieldUtils {
                     ConfigSection section = field.getAnnotation(ConfigSection.class);
                     String sectionName = section.name();
 
-                    if(configuration.getConfigurationSection(sectionName) != null){
+                    if(configuration.contains(sectionName)){
                         try {
                             field.set(config, configuration.getConfigurationSection(sectionName));
                         } catch (IllegalAccessException e) {
@@ -66,8 +66,8 @@ public class FieldUtils {
                         } catch (IllegalAccessException e) {
                             throw new RuntimeException("Error while handling @ConfigSection fields");
                         }
-                        processComments(field, sectionName, configuration);
                     }
+                    processComments(field, sectionName, configuration);
                 });
     }
     private static void processComments(Field field, String path, FileConfiguration configuration){
