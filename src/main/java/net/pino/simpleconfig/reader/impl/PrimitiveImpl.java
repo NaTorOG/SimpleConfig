@@ -1,12 +1,12 @@
-package net.pino.simpleconfig.utils;
+package net.pino.simpleconfig.reader.impl;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.lang.reflect.Field;
 
-public class PrimitiveReader {
+public class PrimitiveImpl {
 
-    public static Object toObj(Field field, FileConfiguration config, String path){
+    public static Object primitiveToObj(Field field, FileConfiguration config, String path){
         if(field.getType() == int.class){
             return config.getInt(path);
         }else if(field.getType() == boolean.class){
@@ -16,4 +16,5 @@ public class PrimitiveReader {
         }
         return null;
     }
+
 }

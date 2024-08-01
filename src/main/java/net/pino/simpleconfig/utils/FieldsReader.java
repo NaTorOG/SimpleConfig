@@ -7,7 +7,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import static net.pino.simpleconfig.utils.PrimitiveReader.toObj;
+import static net.pino.simpleconfig.reader.ObjValue.toObjValue;
+import static net.pino.simpleconfig.reader.impl.PrimitiveImpl.primitiveToObj;
 
 public class FieldsReader {
 
@@ -18,9 +19,7 @@ public class FieldsReader {
             if(field.isAnnotationPresent(Path.class)) {
                 String path = field.getAnnotation(Path.class).value();
                 if (configuration.contains(path)) {
-                    Object value = (field.getType().isPrimitive())
-                            ? toObj(field, configuration, path)
-                            : configuration.getObject(path, field.getType());
+                    Object value = toObjValue(configuration, field, path);
                     if (value != null) {
                         field.set(config, value);
                     }
