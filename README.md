@@ -104,7 +104,36 @@ public class LangConfig extends LightConfig {
 }
 ```
 
-### USING YOUR CONFIGS
+`QuickConfig`
+- [x] Only needs one line of code
+- [x] Requires a file in your resources folder
+- [x] Does not automatically updates missing entries
+- [x] Requires a method to call your values
+
+```java
+import net.pino.simpleconfig.BasicQuickConfig;
+
+public final class TestLib extends JavaPlugin {
+    public QuickConfig messagesConfig;
+
+    @Override
+    public void onEnable() {
+        messagesConfig = new BasicQuickConfig();
+        messagesConfig.registerQuickConfig(                
+                this, // Your plugin Instance
+                "messages.yml" // Your file name in resources folder
+                );
+    }
+    
+    public void accessMessageConfig(){
+        this.messagesConfig.reload();
+        this.messagesConfig.saveAndReload();
+        String messageJoin = this.messagesConfig.getFileConfiguration().getString("firstJoin");
+    }
+}
+```
+
+### USING BASIC CONFIG & LIGHT CONFIG
 ```java
 public final class TestLib extends JavaPlugin{
 
@@ -116,9 +145,8 @@ public final class TestLib extends JavaPlugin{
         exampleConfig = new ExampleConfig(this);
         langConfig = new LangConfig(this);
 
-        // Getting values
+        // Getting values by simply calling your methods
         int port = exampleConfig.port;
-
         String message = langConfig.ciao();
     }
 
