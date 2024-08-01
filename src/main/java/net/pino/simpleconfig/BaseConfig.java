@@ -1,5 +1,6 @@
 package net.pino.simpleconfig;
 
+import net.pino.simpleconfig.annotations.CleanUpdate;
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
 import net.pino.simpleconfig.annotations.Header;
@@ -41,8 +42,13 @@ public abstract class BaseConfig {
 
         String fileName = clazz.getAnnotation(ConfigFile.class).value();
         configFile = new File(plugin.getDataFolder(), fileName);
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 
+        if(configFile.exists() && clazz.isAnnotationPresent(CleanUpdate.class)){
+            handleCleanUpdate(configFile);
+            return;
+        }
+
+        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         try{
             FieldUtils.load(fileConfiguration, this);
             if(clazz.isAnnotationPresent(Header.class)){
@@ -67,6 +73,26 @@ public abstract class BaseConfig {
         } catch (IOException e) {
             throw new RuntimeException("Error while saving an reloading " + configFile.getName());
         }
+    }
+
+    private void handleCleanUpdate(File configFile){
+        FileConfiguration oldConfig = YamlConfiguration.loadConfiguration(configFile);
+        FieldUtils.load(oldConfig, this);
+
+        FileConfiguration newConfig = new YamlConfiguration();
+        FieldUtils.writeFieldsToFile(newConfig, this);
+
+        if(this.getClass().isAnnotationPresent(Header.class)){
+            newConfig.options().setHeader(List.of(this.getClass().getAnnotation(Header.class).value()));
+        }
+        newConfig.options().parseComments(true);
+        configFile.delete();
+        try {
+            newConfig.save(configFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        fileConfiguration = newConfig;
     }
 
 }

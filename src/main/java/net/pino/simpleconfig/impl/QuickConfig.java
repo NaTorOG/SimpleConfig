@@ -1,4 +1,4 @@
-package net.pino.simpleconfig;
+package net.pino.simpleconfig.impl;
 
 import net.pino.simpleconfig.utils.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -1,5 +1,6 @@
 package net.pino.simpleconfig;
 
+import net.pino.simpleconfig.impl.QuickConfig;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
