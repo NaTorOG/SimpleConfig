@@ -1,18 +1,13 @@
 package net.pino.simpleconfig.utils;
 
-import net.pino.simpleconfig.annotations.impl.ConfigEntry;
 import net.pino.simpleconfig.annotations.inside.Comment;
 import net.pino.simpleconfig.annotations.inside.ConfigSection;
 import net.pino.simpleconfig.annotations.inside.Path;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static net.pino.simpleconfig.reader.ObjValue.toObjValue;
 
@@ -66,6 +61,11 @@ public class FieldUtils {
                                     configuration.getConfigurationSection(section.name()))
                                     .set(entry.key(), entry.value());
                         });
+                        try {
+                            field.set(config, configuration.getConfigurationSection(sectionName));
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException("Error while handling @ConfigSection fields");
+                        }
                         processComments(field, sectionName, configuration);
                     }
                 });
