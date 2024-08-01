@@ -69,6 +69,19 @@ public class ExampleConfig extends BaseConfig {
     @Path("players.allowed")
     @Comment("Allowed players")
     public List<String> players = List.of("Pino", "Gino");
+    
+    @Path("warps")
+    @Comment("Server warps")
+    @CommentInLine({"You can use /setwarp", "to create new warps"})
+    public Map<String, Location> warps = Map.of("spawn", Bukkit.getWorlds().get(0).getSpawnLocation());
+    
+    @ConfigSection(name = "Placeholders-with-permission", entries = {
+            @ConfigEntry(key = "balance.prefix", value = "[bal]", comment = "This is what player have to type in chat"),
+            @ConfigEntry(key = "balance.parser", value = "<yellow>%player_name%'s Money %vault_eco_balance_formatted%</yellow>"),
+            @ConfigEntry(key = "balance.permission", value = "zelchat.placeholder.balance", comment = "This is the permission required to use the placeholder")
+    })
+    @Comment("Your placeholders")
+    public ConfigurationSection placeholders;
 }
 ```
 
@@ -148,4 +161,21 @@ players:
   allowed:
   - Pino
   - Gino
+# Server warps
+warps: # You can use /setwarp
+  # to create new warps
+  spawn:
+    ==: org.bukkit.Location
+    world: world
+    x: -48.0
+    y: 67.0
+    z: 32.0
+    pitch: 0.0
+    yaw: 0.0
+# Your placeholders
+Placeholders-with-permission:
+  balance:
+    prefix: '[bal]' # This is what player have to type in chat
+    parser: <yellow>%player_name%'s Money %vault_eco_balance_formatted%</yellow>
+    permission: zelchat.placeholder.balance # This is the permission required to use the placeholder
 ```

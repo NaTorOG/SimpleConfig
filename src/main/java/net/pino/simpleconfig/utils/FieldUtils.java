@@ -82,7 +82,6 @@ public class FieldUtils {
             configuration.setInlineComments(path, Arrays.asList(field.getAnnotation(CommentInLine.class).value()));
         }
     }
-
     private static void processEntryComments(String path, FileConfiguration configuration, ConfigEntry entry){
         if(entry.comment().isEmpty()) return;
         configuration.setInlineComments(path+"."+entry.key(),
