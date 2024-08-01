@@ -1,6 +1,6 @@
 package net.pino.simpleconfig.impl;
 
-import net.pino.simpleconfig.utils.FileUtils;
+import net.pino.simpleconfig.utils.FileProcessor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +25,7 @@ public interface QuickConfig {
         setConfigFile(configFile);
 
         if(!configFile.exists()){
-            FileUtils.saveResource(fileName, plugin);
+            FileProcessor.saveResource(fileName, plugin);
         }
         FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         setFileConfiguration(fileConfiguration);

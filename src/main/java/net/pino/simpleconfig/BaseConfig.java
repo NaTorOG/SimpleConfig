@@ -4,7 +4,7 @@ import net.pino.simpleconfig.annotations.CleanUpdate;
 import net.pino.simpleconfig.annotations.Config;
 import net.pino.simpleconfig.annotations.ConfigFile;
 import net.pino.simpleconfig.annotations.Header;
-import net.pino.simpleconfig.utils.FieldUtils;
+import net.pino.simpleconfig.utils.FieldProcessor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -50,7 +50,7 @@ public abstract class BaseConfig {
 
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         try{
-            FieldUtils.load(fileConfiguration, this);
+            FieldProcessor.handleFields(fileConfiguration, this);
             if(clazz.isAnnotationPresent(Header.class)){
                 fileConfiguration.options().setHeader(List.of(clazz.getAnnotation(Header.class).value()));
             }
@@ -67,7 +67,7 @@ public abstract class BaseConfig {
      */
     public void reload(){
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-        FieldUtils.load(fileConfiguration, this);
+        FieldProcessor.handleFields(fileConfiguration, this);
         try {
             fileConfiguration.save(configFile);
         } catch (IOException e) {
@@ -75,12 +75,18 @@ public abstract class BaseConfig {
         }
     }
 
+    /***
+     * By Cloning and Comparing the Fields, it will override the
+     * existing file with a new one containing values from old file!
+     * This way we can ensure that entries no longer existing will be removed
+     * @param configFile Existing File
+     */
     private void handleCleanUpdate(File configFile){
         FileConfiguration oldConfig = YamlConfiguration.loadConfiguration(configFile);
-        FieldUtils.load(oldConfig, this);
+        FieldProcessor.handleFields(oldConfig, this);
 
         FileConfiguration newConfig = new YamlConfiguration();
-        FieldUtils.writeFieldsToFile(newConfig, this);
+        FieldProcessor.writeFieldsToFile(newConfig, this);
 
         if(this.getClass().isAnnotationPresent(Header.class)){
             newConfig.options().setHeader(List.of(this.getClass().getAnnotation(Header.class).value()));
