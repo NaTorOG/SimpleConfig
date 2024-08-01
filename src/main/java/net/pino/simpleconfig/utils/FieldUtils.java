@@ -1,6 +1,7 @@
 package net.pino.simpleconfig.utils;
 
 import net.pino.simpleconfig.annotations.inside.Comment;
+import net.pino.simpleconfig.annotations.inside.CommentInLine;
 import net.pino.simpleconfig.annotations.inside.ConfigSection;
 import net.pino.simpleconfig.annotations.inside.Path;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -71,7 +72,11 @@ public class FieldUtils {
                 });
     }
     private static void processComments(Field field, String path, FileConfiguration configuration){
-        if(field.isAnnotationPresent(Comment.class)) return;
-        configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
+        if(field.isAnnotationPresent(Comment.class)) {
+            configuration.setComments(path, Arrays.asList(field.getAnnotation(Comment.class).value()));
+        }
+        if(field.isAnnotationPresent(CommentInLine.class)){
+            configuration.setInlineComments(path, Arrays.asList(field.getAnnotation(CommentInLine.class).value()));
+        }
     }
 }
