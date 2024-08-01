@@ -45,7 +45,6 @@ public class FieldUtils {
                     }
                 });
     }
-
     private static void handleConfigSectionFields(Class<?> clazz, FileConfiguration configuration, Object config){
         Arrays.stream(clazz.getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(ConfigSection.class))

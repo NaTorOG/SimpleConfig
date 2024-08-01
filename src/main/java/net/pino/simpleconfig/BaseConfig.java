@@ -55,27 +55,18 @@ public abstract class BaseConfig {
         }
     }
 
-    /***
-     * Save the in Memory configuration in the @File and Reload it
-     * @param plugin Your Plugin Instance
-     */
-    public void saveAndReload(Plugin plugin){
-        registerConfig(plugin);
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-        try {
-            fileConfiguration.save(configFile);
-        } catch (IOException e) {
-            throw new RuntimeException("Error while saving an reloading " + configFile.getName());
-        }
-        FieldUtils.load(fileConfiguration, this);
-    }
-
+    
     /***
      * Simply reload the in Memory configuration reading @File
      */
     public void reload(){
         fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
         FieldUtils.load(fileConfiguration, this);
+        try {
+            fileConfiguration.save(configFile);
+        } catch (IOException e) {
+            throw new RuntimeException("Error while saving an reloading " + configFile.getName());
+        }
     }
 
 }
