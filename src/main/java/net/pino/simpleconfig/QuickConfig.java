@@ -1,6 +1,5 @@
 package net.pino.simpleconfig;
 
-import net.pino.simpleconfig.annotations.QuickConfiguration;
 import net.pino.simpleconfig.utils.FileUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,44 +7,37 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 
-public abstract class QuickConfig {
+public interface QuickConfig {
 
-    /***
-     * Represents the Physical File
-     */
-    protected File configFile;
+    File getConfigFile();
+    void setConfigFile(File configFile);
 
-    /***
-     * Represents the in Memory Configuration
-     */
-    public FileConfiguration fileConfiguration;
+    FileConfiguration getFileConfiguration();
+    void setFileConfiguration(FileConfiguration fileConfiguration);
 
     /***
      * Register a basic Config that does not auto update and has no fields
      * @param plugin Your Plugin Instance
      */
-    public void registerQuickConfig(Plugin plugin, Field field){
-
-        if(!field.isAnnotationPresent(QuickConfiguration.class)) throw new IllegalArgumentException("The field must be annotated with @QuickConfiguration!");
-
-        String fileName = field.getAnnotation(QuickConfiguration.class).value();
-        configFile = new File(plugin.getDataFolder(), fileName);
+    default void registerQuickConfig(Plugin plugin, String fileName){
+        File configFile = new File(plugin.getDataFolder(), fileName);
+        setConfigFile(configFile);
 
         if(!configFile.exists()){
             FileUtils.saveResource(fileName, plugin);
         }
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        FileConfiguration fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+        setFileConfiguration(fileConfiguration);
     }
 
     /***
      * Save the in Memory configuration in the @File and Reload it
      */
-    public void saveAndReload(){
+    default void saveAndReload(){
         try{
-            fileConfiguration.save(configFile);
-            fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+            getFileConfiguration().save(getConfigFile());
+            setFileConfiguration(YamlConfiguration.loadConfiguration(getConfigFile()));
         }catch (IOException exception){
             exception.printStackTrace();
         }
@@ -55,7 +47,8 @@ public abstract class QuickConfig {
     /***
      * Simply reload the in Memory configuration reading @File
      */
-    public void reload(){
-        fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
+    default void reload(){
+        setFileConfiguration(YamlConfiguration.loadConfiguration(getConfigFile()));
     }
+
 }
