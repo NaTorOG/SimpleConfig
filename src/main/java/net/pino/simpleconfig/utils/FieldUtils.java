@@ -1,5 +1,6 @@
 package net.pino.simpleconfig.utils;
 
+import net.pino.simpleconfig.annotations.impl.ConfigEntry;
 import net.pino.simpleconfig.annotations.inside.Comment;
 import net.pino.simpleconfig.annotations.inside.CommentInLine;
 import net.pino.simpleconfig.annotations.inside.ConfigSection;
@@ -8,6 +9,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 import static net.pino.simpleconfig.reader.ObjValue.toObjValue;
@@ -61,6 +63,7 @@ public class FieldUtils {
                             Objects.requireNonNull(
                                     configuration.getConfigurationSection(section.name()))
                                     .set(entry.key(), entry.value());
+                            processEntryComments(sectionName, configuration, entry);
                         });
                         try {
                             field.set(config, configuration.getConfigurationSection(sectionName));
@@ -78,5 +81,11 @@ public class FieldUtils {
         if(field.isAnnotationPresent(CommentInLine.class)){
             configuration.setInlineComments(path, Arrays.asList(field.getAnnotation(CommentInLine.class).value()));
         }
+    }
+
+    private static void processEntryComments(String path, FileConfiguration configuration, ConfigEntry entry){
+        if(entry.comment().isEmpty()) return;
+        configuration.setInlineComments(path+"."+entry.key(),
+                Collections.singletonList(entry.comment()));
     }
 }
