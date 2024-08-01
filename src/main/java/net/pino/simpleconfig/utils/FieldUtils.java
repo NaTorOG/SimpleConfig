@@ -51,7 +51,7 @@ public class FieldUtils {
                         ConfigurationSection oldSection = (ConfigurationSection) field.get(config);
                         oldSection.getKeys(true).forEach(key -> {
                             Object value = oldSection.get(key);
-                            fileConfiguration.set(key, value);
+                            fileConfiguration.set(sectionName+"."+key, value);
                         });
 
                         Arrays.stream(section.entries()).toList().forEach(entry -> {
