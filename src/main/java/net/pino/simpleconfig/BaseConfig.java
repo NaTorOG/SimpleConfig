@@ -23,7 +23,7 @@ public abstract class BaseConfig {
     /***
      * Represents the in Memory Configuration
      */
-    protected FileConfiguration fileConfiguration;
+    public FileConfiguration fileConfiguration;
 
     /***
      * Register and update your configuration and will also add non-existing values into @File
