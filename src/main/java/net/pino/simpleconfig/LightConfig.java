@@ -5,6 +5,7 @@ import net.pino.simpleconfig.annotations.ConfigFile;
 import net.pino.simpleconfig.utils.FileProcessor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -39,7 +40,6 @@ public abstract class LightConfig {
 
         String fileName = clazz.getAnnotation(ConfigFile.class).value();
         configFile = new File(plugin.getDataFolder(), fileName);
-
         if(!configFile.exists()){
             FileProcessor.saveResource(fileName, plugin);
         }

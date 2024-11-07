@@ -1,7 +1,6 @@
 package net.pino.simpleconfig.annotations.impl;
 
-import net.pino.simpleconfig.annotations.inside.Comment;
-import net.pino.simpleconfig.annotations.inside.CommentInLine;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,4 +13,5 @@ public @interface ConfigEntry {
     String key();
     String value();
     String comment() default "";
+    Class<?> clazz();
 }

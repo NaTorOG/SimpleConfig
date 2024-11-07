@@ -17,4 +17,15 @@ public class PrimitiveImpl {
         return null;
     }
 
+    public static Object primitiveToObj(String value, Class<?> clazz){
+        if(clazz == int.class){
+            return Integer.parseInt(value);
+        }else if(clazz == boolean.class){
+            return Boolean.parseBoolean(value);
+        }else if(clazz == long.class){
+            return Long.parseLong(value);
+        }
+        return null;
+    }
+
 }

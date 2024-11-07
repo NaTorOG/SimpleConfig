@@ -19,4 +19,11 @@ public class ObjValue {
             return configuration.getObject(path, field.getType());
         }
     }
+
+    public static Object toObjValue(String value, Class<?> clazz){
+        if(clazz.isPrimitive()){
+            return primitiveToObj(value, clazz);
+        }
+        return value;
+    }
 }

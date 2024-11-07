@@ -5,6 +5,7 @@ import net.pino.simpleconfig.annotations.inside.Comment;
 import net.pino.simpleconfig.annotations.inside.CommentInLine;
 import net.pino.simpleconfig.annotations.inside.ConfigSection;
 import net.pino.simpleconfig.annotations.inside.Path;
+import net.pino.simpleconfig.reader.ObjValue;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -24,7 +25,6 @@ public class FieldProcessor {
                 .filter(field -> field.isAnnotationPresent(Path.class) || field.isAnnotationPresent(ConfigSection.class))
                 .forEach(field -> {
                     field.setAccessible(true);
-
                     if(field.isAnnotationPresent(Path.class)){
                         handleClassicField(field, configuration, config);
                     }
@@ -63,7 +63,7 @@ public class FieldProcessor {
             Arrays.stream(section.entries()).toList().forEach(entry -> {
                 Objects.requireNonNull(
                                 configuration.getConfigurationSection(section.name()))
-                        .set(entry.key(), entry.value());
+                        .set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
                 CommentsProcessor.processEntryComments(sectionName, configuration, entry);
             });
             try {
@@ -115,7 +115,7 @@ public class FieldProcessor {
             Arrays.stream(section.entries()).toList().forEach(entry -> {
                 Objects.requireNonNull(
                                 fileConfiguration.getConfigurationSection(section.name()))
-                        .set(entry.key(), entry.value());
+                        .set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
                 CommentsProcessor.processEntryComments(sectionName, fileConfiguration, entry);
             });
 
