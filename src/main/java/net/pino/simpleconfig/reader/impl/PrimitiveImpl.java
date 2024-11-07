@@ -13,6 +13,8 @@ public class PrimitiveImpl {
             return config.getBoolean(path);
         }else if(field.getType() == long.class){
             return config.getLong(path);
+        }else if(field.getType() == double.class) {
+            return Double.parseDouble(path);
         }
         return null;
     }
@@ -24,6 +26,8 @@ public class PrimitiveImpl {
             return Boolean.parseBoolean(value);
         }else if(clazz == long.class){
             return Long.parseLong(value);
+        }else if(clazz == double.class) {
+            return Double.parseDouble(value);
         }
         return null;
     }
