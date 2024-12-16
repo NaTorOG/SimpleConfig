@@ -14,7 +14,7 @@ public class PrimitiveImpl {
         }else if(field.getType() == long.class){
             return config.getLong(path);
         }else if(field.getType() == double.class) {
-            return Double.parseDouble(path);
+            return config.getDouble(path);
         }
         return null;
     }
