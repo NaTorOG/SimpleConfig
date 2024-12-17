@@ -61,9 +61,8 @@ public class FieldProcessor {
         }else{
             configuration.createSection(sectionName);
             Arrays.stream(section.entries()).toList().forEach(entry -> {
-                Objects.requireNonNull(
-                                configuration.getConfigurationSection(section.name()))
-                        .set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
+                if(!entry.persist()) return;
+                Objects.requireNonNull(configuration.getConfigurationSection(section.name())).set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
                 CommentsProcessor.processEntryComments(sectionName, configuration, entry);
             });
             try {
