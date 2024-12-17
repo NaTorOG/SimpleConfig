@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static net.pino.simpleconfig.reader.ObjValue.toObjValue;
@@ -61,8 +62,11 @@ public class FieldProcessor {
         }else{
             configuration.createSection(sectionName);
             Arrays.stream(section.entries()).toList().forEach(entry -> {
-                if(!entry.persist()) return;
-                Objects.requireNonNull(configuration.getConfigurationSection(section.name())).set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
+                if(entry.value().isEmpty() || entry.value().isBlank()){
+                    Objects.requireNonNull(configuration.getConfigurationSection(section.name())).set(entry.key(), Arrays.asList(entry.values()));
+                }else{
+                    Objects.requireNonNull(configuration.getConfigurationSection(section.name())).set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
+                }
                 CommentsProcessor.processEntryComments(sectionName, configuration, entry);
             });
             try {
@@ -112,9 +116,11 @@ public class FieldProcessor {
             });
 
             Arrays.stream(section.entries()).toList().forEach(entry -> {
-                Objects.requireNonNull(
-                                fileConfiguration.getConfigurationSection(section.name()))
-                        .set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
+                if(entry.value().isEmpty() || entry.value().isBlank()){
+                    Objects.requireNonNull(fileConfiguration.getConfigurationSection(section.name())).set(entry.key(), Arrays.asList(entry.values()));
+                }else{
+                    Objects.requireNonNull(fileConfiguration.getConfigurationSection(section.name())).set(entry.key(), ObjValue.toObjValue(entry.value(), entry.clazz()));
+                }
                 CommentsProcessor.processEntryComments(sectionName, fileConfiguration, entry);
             });
 

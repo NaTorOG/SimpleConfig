@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ConfigEntry {
     String key();
-    String value();
+    String value() default "";
+    String[] values() default {};
     String comment() default "";
     Class<?> clazz();
     boolean persist() default false;
